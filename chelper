@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+#
+#                  Caddy Helper Script
+#
+#   Homepage: https://github.com/niklas-heer/chelper
+#   Issues:   https://github.com/niklas-heer/chelper/issues
+#   Requires: bash, curl or wget and systemd
+#
+# Hi! This is a small script that helps you with common tasks with caddy.
+# Use it like this:
+#
+#
+CHELPER_PARAMS="git,filemanager,cors,hugo,ipfilter,locale,mailout,minify,ratelimit,realip,search,upload"
+
+#########################
+# The command line help #
+#########################
+chelper_display_help() {
+	echo "Usage: chelper [option...]" >&2
+	echo
+	echo "   -h, help           Displays this help page."
+	echo "   -u, update         Updates caddy with all the wanted plugins."
+	echo "   -f, fix            Fixes systemd related issue with caddy."
+	echo
+}
+
+##################
+# Helper command #
+##################
+case "$1" in
+	-h | help)
+		chelper_display_help  # Call your function
+		;;
+	-u | update)
+		curl https://getcaddy.com | bash -s $CHELPER_PARAMS
+		;;
+	-f | fix)
+		chown caddy:caddy /usr/local/bin/caddy
+		sudo setcap cap_net_bind_service=+ep /usr/local/bin/caddy &>/dev/null
+		;;
+	-*)
+		echo "Error: Unknown option: $1" >&2
+		;;
+	*)  # No more options
+		chelper_display_help
+		;;
+esac
