@@ -9,8 +9,13 @@
 # Hi! This is a small script that helps you with common tasks with caddy.
 # Use it like this:
 #
-#
-CHELPER_PARAMS="git,filemanager,cors,hugo,ipfilter,locale,mailout,minify,ratelimit,realip,search,upload"
+
+# Config
+# Please change these values as needed
+CHELPER_CADDY_PLUGINS="git,filemanager,cors,hugo,ipfilter,locale,mailout,minify,ratelimit,realip,search,upload"
+CHELPER_CADDY_USER="caddy"
+CHELPER_CADDY_PATH="/usr/local/bin/caddy"
+CHELPER_CADDY_CONFIG_PATH="/etc/caddy/Caddyfile"
 
 #########################
 # The command line help #
@@ -24,19 +29,24 @@ chelper_display_help() {
 	echo
 }
 
+chelper_fix() {
+	chown $CHELPER_CADDY_USER:$CHELPER_CADDY_USER $CHELPER_CADDY_PATH
+	sudo setcap cap_net_bind_service=+ep $CHELPER_CADDY_PATH &>/dev/null
+}
+
 ##################
 # Helper command #
 ##################
 case "$1" in
 	-h | help)
-		chelper_display_help  # Call your function
+		chelper_display_help
 		;;
 	-u | update)
-		curl https://getcaddy.com | bash -s $CHELPER_PARAMS
+		curl https://getcaddy.com | bash -s $CHELPER_CADDY_PLUGINS
+		chelper_fix
 		;;
 	-f | fix)
-		chown caddy:caddy /usr/local/bin/caddy
-		sudo setcap cap_net_bind_service=+ep /usr/local/bin/caddy &>/dev/null
+		chelper_fix
 		;;
 	-*)
 		echo "Error: Unknown option: $1" >&2
