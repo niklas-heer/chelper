@@ -29,6 +29,36 @@ chelper_display_help() {
 	echo
 }
 
+# Source: https://gist.github.com/epiloque/8cf512c6d64641bde388
+parse_yaml() {
+    local prefix=$2
+    local s
+    local w
+    local fs
+    s='[[:space:]]*'
+    w='[a-zA-Z0-9_]*'
+    fs="$(echo @|tr @ '\034')"
+    sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s[:-]$s\(.*\)$s\$|\1$fs\2$fs\3|p" "$1" |
+    awk -F"$fs" '{
+    indent = length($1)/2;
+    vname[indent] = $2;
+    for (i in vname) {if (i > indent) {delete vname[i]}}
+        if (length($3) > 0) {
+            vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+            printf("%s%s%s=(\"%s\")\n", "'"$prefix"'",vn, $2, $3);
+        }
+    }' | sed 's/_=/+=/g'
+}
+
+
+# get config
+eval $(parse_yaml chelper_config.yml "config_")
+
+# test yaml content
+# plugins="$(printf '%s,' ${config_chelper_plugins[@]})"
+# echo ${plugins::-1} # cut last char
+
 chelper_fix() {
 	chown $CHELPER_CADDY_USER:$CHELPER_CADDY_USER $CHELPER_CADDY_PATH
 	sudo setcap cap_net_bind_service=+ep $CHELPER_CADDY_PATH &>/dev/null
