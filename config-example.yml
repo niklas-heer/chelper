@@ -1,0 +1,17 @@
+chelper:
+  user: caddy
+  caddy_bin: /usr/local/bin/caddy
+  caddy_config: /etc/caddy/Caddyfile
+  plugins:
+    - git
+    - filemanager
+    - cors
+    - hugo
+    - ipfilter
+    - locale
+    - mailout
+    - minify
+    - ratelimit
+    - realip
+    - search
+    - upload
