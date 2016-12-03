@@ -10,13 +10,6 @@
 # Use it like this:
 #
 
-# Config
-# Please change these values as needed
-CHELPER_CADDY_PLUGINS="git,filemanager,cors,hugo,ipfilter,locale,mailout,minify,ratelimit,realip,search,upload"
-CHELPER_CADDY_USER="caddy"
-CHELPER_CADDY_PATH="/usr/local/bin/caddy"
-CHELPER_CADDY_CONFIG_PATH="/etc/caddy/Caddyfile"
-
 #########################
 # The command line help #
 #########################
