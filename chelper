@@ -10,6 +10,8 @@
 # Use it like this:
 #
 
+CHELPER_CONFIG_PATH="config-example.yml"
+
 #########################
 # The command line help #
 #########################
@@ -46,15 +48,14 @@ parse_yaml() {
 
 
 # get config
-eval $(parse_yaml chelper_config.yml "config_")
-
-# test yaml content
-# plugins="$(printf '%s,' ${config_chelper_plugins[@]})"
-# echo ${plugins::-1} # cut last char
+eval $(parse_yaml $CHELPER_CONFIG_PATH "config_")
+CHELPER_CADDY_PLUGINS="$(printf '%s,' ${config_chelper_plugins[@]} | sed 's/.$//')"
 
 chelper_fix() {
-	chown $CHELPER_CADDY_USER:$CHELPER_CADDY_USER $CHELPER_CADDY_PATH
-	sudo setcap cap_net_bind_service=+ep $CHELPER_CADDY_PATH &>/dev/null
+	# fix owner
+	chown $config_chelper_user:$config_chelper_user $config_chelper_caddy_bin
+	# fix systemd
+	sudo setcap cap_net_bind_service=+ep $config_chelper_caddy_bin &>/dev/null
 }
 
 ##################
