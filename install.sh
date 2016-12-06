@@ -1,5 +1,26 @@
 set -e
 
+install_config()
+{
+	# Check if it already exists -> abort
+	# If not:
+	# - Download file
+	# - make folder
+	# - move to folder
+	# - dialog to choose (check whiptail/maybe let it work with dialog)
+
+	install_path="/etc/chelper"
+	chelper_config="config.yml"
+
+	# only install the config file if none exists
+	if [ ! -f "${install_path}/${chelper_config}" ]; then
+	    echo "File not found!"
+	fi
+
+	# whiptail --checklist "Please pick one" 10 60 5 one one off two two off\
+    # three three off four four off  five five off
+}
+
 install_chelper()
 {
 	install_path="/usr/local/bin"
@@ -51,4 +72,5 @@ install_chelper()
 	exit 0
 }
 
-install_chelper "$@"
+# install_chelper "$@"
+install_config "$@"
