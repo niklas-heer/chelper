@@ -1,0 +1,6 @@
+chelper:
+  user: caddy
+  bin: /usr/local/bin/caddy
+  config: /etc/caddy/Caddyfile
+  plugins:
+    - minify
