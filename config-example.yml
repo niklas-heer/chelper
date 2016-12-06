@@ -1,7 +1,7 @@
 chelper:
   user: caddy
-  caddy_bin: /usr/local/bin/caddy
-  caddy_config: /etc/caddy/Caddyfile
+  bin: /usr/local/bin/caddy
+  config: /etc/caddy/Caddyfile
   plugins:
     - git
     - filemanager

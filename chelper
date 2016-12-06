@@ -54,9 +54,9 @@ CHELPER_CADDY_PLUGINS="$(printf '%s,' ${config_chelper_plugins[@]} | sed 's/.$//
 
 chelper_fix() {
 	# fix owner
-	chown $config_chelper_user:$config_chelper_user $config_chelper_caddy_bin
+	chown $config_chelper_user:$config_chelper_user $config_chelper_bin
 	# fix systemd
-	sudo setcap cap_net_bind_service=+ep $config_chelper_caddy_bin &>/dev/null
+	sudo setcap cap_net_bind_service=+ep $config_chelper_bin &>/dev/null
 }
 
 ##################
