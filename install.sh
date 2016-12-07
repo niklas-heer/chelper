@@ -11,10 +11,29 @@ install_config()
 
 	install_path="/etc/chelper"
 	chelper_config="config.yml"
+	config_url="https://raw.githubusercontent.com/niklas-heer/chelper/master/config.yml"
 
 	# only install the config file if none exists
 	if [ ! -f "${install_path}/${chelper_config}" ]; then
-	    echo "File not found!"
+	    echo "Downloading chelper config file..."
+		echo "$config_url"
+
+		rm -rf "/tmp/${chelper_config}"
+
+		if [ -n "$(which curl)" ]; then
+			curl -fsSL "$config_url" \
+				-o "/tmp/${chelper_config}"
+		elif [ -n "$(which wget)" ]; then
+			wget --quiet "$config_url" \
+				-O "/tmp/${chelper_config}"
+		else
+			echo "could not find curl or wget"
+			exit 4
+		fi
+
+		echo "Putting chelper config in ${install_path} (may require password)"
+		sudo mv "/tmp/${chelper_config}" "${install_path}/${chelper_config}"
+		sudo rm "/tmp/${chelper_config}"
 	fi
 
 	# whiptail --checklist "Please pick one" 10 60 5 one one off two two off\
@@ -40,12 +59,11 @@ install_chelper()
 	########################
 	# Download and extract #
 	########################
-	echo "Downloading chlper..."
-	chelper_file="chlper"
+	echo "Downloading chelper..."
+	chelper_file="chelper"
 	chelper_url="https://raw.githubusercontent.com/niklas-heer/chelper/master/chelper"
 	echo "$chelper_url"
 
-	# Use $PREFIX for compatibility with Termux on Android
 	rm -rf "/tmp/${chelper_file}"
 
 	if [ -n "$(which curl)" ]; then
@@ -59,10 +77,10 @@ install_chelper()
 		exit 4
 	fi
 
-	chmod +x "/tmp/${chelper_bin}"
+	chmod +x "/tmp/${chelper_file}"
 
 	echo "Putting caddy in ${install_path} (may require password)"
-	sudo mv "/tmp/${chelper_bin}" "${install_path}/${chelper_bin}"
+	sudo mv "/tmp/${chelper_file}" "${install_path}/${chelper_file}"
 	sudo rm "/tmp/${chelper_file}"
 
 	# check installation
