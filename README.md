@@ -1,6 +1,8 @@
 # chelper
 A small caddy helper script. WIP.
 
+It helps you to update caddy with all the plugins you want and need. You can save which plugins you want in a config file.
+
 ## Usage
 ```
 chelper [option...]
