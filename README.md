@@ -1,7 +1,8 @@
 # chelper
 A small caddy helper script. WIP.
 
-It helps you to update caddy with all the plugins you want and need. You can save which plugins you want in a config file.
+It helps you to update caddy with all the plugins you want and need. You can save which plugins are being used in a config file.
+Also it helps you to fix common issues such as file permissions and systemd permissions.
 
 ## Usage
 ```
